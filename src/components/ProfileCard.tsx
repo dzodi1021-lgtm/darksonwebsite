@@ -5,6 +5,7 @@ import { ActivityCard } from "@/components/ActivityCard";
 import { Cursor } from "@/components/Cursor";
 import { SpotifyCard } from "@/components/SpotifyCard";
 import { StatusBadge } from "@/components/StatusBadge";
+import { ViewCounter } from "@/components/ViewCounter";
 import { avatarUrl, type LanyardData } from "@/libs/lanyard";
 import { useLanyard } from "@/hooks/useLanyard";
 
@@ -92,8 +93,9 @@ export function ProfileCard({ initialData }: ProfileCardProps) {
             <p className="mono mt-0.5 text-sm text-[var(--text-muted)] sm:mt-1">
               @{username}
             </p>
-            <div className="mt-1.5 sm:mt-2">
+            <div className="mt-1.5 flex flex-wrap items-center gap-3 sm:mt-2">
               {data && <StatusBadge status={data.discord_status} />}
+              <ViewCounter />
             </div>
           </div>
         </div>
