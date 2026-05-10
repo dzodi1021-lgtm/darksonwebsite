@@ -72,32 +72,28 @@ function url(name: string, action?: "up") {
 }
 
 async function read(name: string, action?: "up") {
-  try {
-    const response = await fetch(url(name, action), {
-      cache: "no-store",
-      headers: {
-        Accept: "application/json",
-      },
-    });
+  const response = await fetch(url(name, action), {
+    cache: "no-store",
+    headers: {
+      Accept: "application/json",
+    },
+  });
 
-    if (!response.ok && !action) {
-      return 0;
-    }
-
-    if (!response.ok) {
-      throw new Error("Counter request failed");
-    }
-
-    const payload = (await response.json()) as CounterPayload;
-
-    return Number.isFinite(payload.count) ? Number(payload.count) : 0;
-  } catch {
-    if (action) {
-      throw new Error("Counter request failed");
-    }
-
+  if (!action && (response.status === 400 || response.status === 404)) {
     return 0;
   }
+
+  if (!response.ok && !action) {
+    return 0;
+  }
+
+  if (!response.ok) {
+    throw new Error("Counter request failed");
+  }
+
+  const payload = (await response.json()) as CounterPayload;
+
+  return Number.isFinite(payload.count) ? Number(payload.count) : 0;
 }
 
 function dayName(date: Date) {
@@ -130,11 +126,13 @@ export async function total() {
 
 export async function hit() {
   const now = new Date();
-  const main = await read(baseName, "up");
+  const values = await Promise.all([
+    read(baseName, "up"),
+    read(dayName(now), "up"),
+    read(hourName(now), "up"),
+  ]);
 
-  await Promise.allSettled([read(dayName(now), "up"), read(hourName(now), "up")]);
-
-  return main;
+  return values[0];
 }
 
 export async function stats(range: Stats["range"]): Promise<Stats> {

@@ -6,17 +6,13 @@ const YEAR = 60 * 60 * 24 * 365;
 
 export const dynamic = "force-dynamic";
 
-function remember(request: NextRequest, response: NextResponse) {
-  const secure =
-    request.nextUrl.protocol === "https:" ||
-    request.headers.get("x-forwarded-proto") === "https";
-
+function remember(response: NextResponse) {
   response.cookies.set(COOKIE, "1", {
     httpOnly: true,
     maxAge: YEAR,
     path: "/",
     sameSite: "lax",
-    secure,
+    secure: process.env.NODE_ENV === "production",
   });
 
   return response;
@@ -50,7 +46,7 @@ export async function POST(request: NextRequest) {
       },
     );
 
-    return seen ? response : remember(request, response);
+    return seen ? response : remember(response);
   } catch {
     return NextResponse.json({ views: 0, counted: false }, { status: 502 });
   }
