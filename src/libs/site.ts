@@ -1,6 +1,6 @@
 export const SITE_NAME = "DarkSon";
 export const SITE_DESCRIPTION =
-  "Visit the website of the most intelligent and charismatic person that exists in this world.";
+  "Visit the website of the most intelligent and charismatic person that exists in this world";
 
 export function siteUrl() {
   const raw =
