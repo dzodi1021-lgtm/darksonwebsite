@@ -1,54 +1,27 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { hit, total } from "@/libs/counters";
 
-interface CounterPayload {
-  count?: number;
-}
-
-const COUNTER_API_BASE_URL =
-  process.env.COUNTER_API_BASE_URL?.trim() || "https://api.counterapi.dev/v1";
-const VIEW_COUNTER_NAMESPACE =
-  process.env.VIEW_COUNTER_NAMESPACE?.trim() || "darksonwebsite";
-const VIEW_COUNTER_NAME =
-  process.env.VIEW_COUNTER_NAME?.trim() ||
-  (process.env.NODE_ENV === "development" ? "views-dev" : "views");
+const COOKIE = "darkson_seen";
+const YEAR = 60 * 60 * 24 * 365;
 
 export const dynamic = "force-dynamic";
 
-function counterUrl(action?: "up") {
-  const namespace = encodeURIComponent(VIEW_COUNTER_NAMESPACE);
-  const name = encodeURIComponent(VIEW_COUNTER_NAME);
-  const suffix = action ? `/${action}` : "";
-
-  return `${COUNTER_API_BASE_URL}/${namespace}/${name}${suffix}`;
-}
-
-async function read(action?: "up") {
-  const response = await fetch(counterUrl(action), {
-    cache: "no-store",
-    headers: {
-      Accept: "application/json",
-    },
+function remember(response: NextResponse) {
+  response.cookies.set(COOKIE, "1", {
+    httpOnly: true,
+    maxAge: YEAR,
+    path: "/",
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
   });
 
-  if (response.status === 404) {
-    return 0;
-  }
-
-  if (!response.ok) {
-    throw new Error("Counter request failed");
-  }
-
-  const payload = (await response.json()) as CounterPayload;
-
-  return Number.isFinite(payload.count) ? Number(payload.count) : 0;
+  return response;
 }
 
 export async function GET() {
   try {
-    const views = await read();
-
     return NextResponse.json(
-      { views },
+      { views: await total(), counted: false },
       {
         headers: {
           "Cache-Control": "no-store",
@@ -56,23 +29,25 @@ export async function GET() {
       },
     );
   } catch {
-    return NextResponse.json({ views: 0 }, { status: 502 });
+    return NextResponse.json({ views: 0, counted: false }, { status: 502 });
   }
 }
 
-export async function POST() {
+export async function POST(request: NextRequest) {
   try {
-    const views = await read("up");
-
-    return NextResponse.json(
-      { views },
+    const seen = request.cookies.get(COOKIE)?.value === "1";
+    const views = seen ? await total() : await hit();
+    const response = NextResponse.json(
+      { views, counted: !seen },
       {
         headers: {
           "Cache-Control": "no-store",
         },
       },
     );
+
+    return seen ? response : remember(response);
   } catch {
-    return NextResponse.json({ views: 0 }, { status: 502 });
+    return NextResponse.json({ views: 0, counted: false }, { status: 502 });
   }
 }

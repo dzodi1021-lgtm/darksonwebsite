@@ -1,4 +1,5 @@
 import { ProfileCard } from "@/components/ProfileCard";
+import { getConfig } from "@/libs/site-config";
 import {
   getLanyardUserId,
   LANYARD_REST_URL,
@@ -31,7 +32,7 @@ async function presence(): Promise<LanyardData | null> {
 }
 
 export default async function Home() {
-  const data = await presence();
+  const [data, config] = await Promise.all([presence(), getConfig()]);
 
-  return <ProfileCard initialData={data} />;
+  return <ProfileCard initialData={data} settings={config} />;
 }

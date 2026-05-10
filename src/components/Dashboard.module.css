@@ -1,0 +1,284 @@
+.shell {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: 15rem 1fr;
+  gap: 1.2rem;
+  padding: 1rem;
+  background:
+    radial-gradient(circle at 70% 8%, rgba(255, 255, 255, 0.09), transparent 28rem),
+    linear-gradient(135deg, #050505, #111 45%, #050505);
+  color: #fff;
+}
+
+.side,
+.panel,
+.stat,
+.chartCard,
+.editor,
+.pageCard {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(10, 10, 10, 0.72);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 24px 80px rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(22px);
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100dvh - 2rem);
+  border-radius: 1.5rem;
+  padding: 1rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.6rem;
+}
+
+.logo {
+  display: grid;
+  place-items: center;
+  width: 2.45rem;
+  height: 2.45rem;
+  border-radius: 999px;
+  background: #fff;
+  color: #000;
+  font-weight: 800;
+  box-shadow: 0 0 28px rgba(255, 255, 255, 0.24);
+}
+
+.welcome,
+.handle,
+.kicker,
+.ip,
+.stat span,
+.pageCard p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.welcome,
+.handle,
+.ip,
+.pageCard p {
+  font-size: 0.8rem;
+}
+
+.handle {
+  color: #fff;
+  font-weight: 700;
+}
+
+.nav {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.nav span,
+.pageCard a,
+.save,
+.tabs button {
+  border: 1px solid transparent;
+  border-radius: 0.85rem;
+  background: transparent;
+  color: inherit;
+  text-decoration: none;
+}
+
+.nav span {
+  padding: 0.7rem 0.8rem;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.nav .active,
+.nav span:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.pageCard {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: auto;
+  border-radius: 1.2rem;
+  padding: 1rem;
+}
+
+.pageCard a {
+  display: inline-flex;
+  justify-content: center;
+  padding: 0.72rem 1rem;
+  background: #fff;
+  color: #000;
+  font-weight: 800;
+}
+
+.panel {
+  border-radius: 1.7rem;
+  padding: 1.35rem;
+}
+
+.top,
+.chartHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.top h1,
+.chartHead h2,
+.editor h2 {
+  margin: 0.2rem 0 0;
+}
+
+.kicker {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.save {
+  cursor: pointer;
+  padding: 0.78rem 1rem;
+  background: #fff;
+  color: #000;
+  font-weight: 800;
+}
+
+.save:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.notice {
+  margin: 1rem 0 0;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-top: 1.2rem;
+}
+
+.stat {
+  min-height: 6rem;
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.stat strong {
+  display: block;
+  margin-top: 0.8rem;
+  font-size: 1.35rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(19rem, 0.75fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.chartCard,
+.editor {
+  border-radius: 1.1rem;
+  padding: 1rem;
+}
+
+.tabs {
+  display: inline-flex;
+  gap: 0.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  padding: 0.25rem;
+}
+
+.tabs button {
+  cursor: pointer;
+  padding: 0.45rem 0.75rem;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.tabs .tabActive {
+  background: #fff;
+  color: #000;
+}
+
+.chart {
+  width: 100%;
+  height: auto;
+  margin-top: 1.2rem;
+  overflow: visible;
+}
+
+.gridLine {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-dasharray: 7 9;
+}
+
+.stroke {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.92);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.32));
+}
+
+.labels {
+  display: flex;
+  justify-content: space-between;
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 0.75rem;
+}
+
+.editor {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.editor label {
+  display: grid;
+  gap: 0.38rem;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.78rem;
+}
+
+.editor input,
+.editor select {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.72rem;
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  outline: none;
+  padding: 0.72rem 0.8rem;
+}
+
+.editor option {
+  background: #111;
+}
+
+@media (max-width: 980px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .side {
+    min-height: auto;
+  }
+
+  .grid,
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}
