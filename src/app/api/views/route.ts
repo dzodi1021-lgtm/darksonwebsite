@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 interface CounterPayload {
   count?: number;
@@ -10,7 +11,9 @@ const VIEW_COUNTER_NAMESPACE =
   process.env.VIEW_COUNTER_NAMESPACE?.trim() || "darksonwebsite";
 const VIEW_COUNTER_NAME =
   process.env.VIEW_COUNTER_NAME?.trim() ||
-  (process.env.NODE_ENV === "development" ? "views-dev" : "views");
+  (process.env.NODE_ENV === "development" ? "views-dev-v2" : "views-v2");
+const VIEW_COOKIE_NAME = "darkson_view_seen";
+const VIEW_COOKIE_AGE = 60 * 60 * 24 * 365;
 
 export const dynamic = "force-dynamic";
 
@@ -62,9 +65,10 @@ export async function GET() {
 
 export async function POST() {
   try {
-    const views = await read("up");
-
-    return NextResponse.json(
+    const cookieStore = await cookies();
+    const alreadySeen = cookieStore.get(VIEW_COOKIE_NAME)?.value === VIEW_COUNTER_NAME;
+    const views = await read(alreadySeen ? undefined : "up");
+    const response = NextResponse.json(
       { views },
       {
         headers: {
@@ -72,6 +76,18 @@ export async function POST() {
         },
       },
     );
+
+    if (!alreadySeen) {
+      response.cookies.set(VIEW_COOKIE_NAME, VIEW_COUNTER_NAME, {
+        httpOnly: true,
+        maxAge: VIEW_COOKIE_AGE,
+        path: "/",
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+      });
+    }
+
+    return response;
   } catch {
     return NextResponse.json({ views: 0 }, { status: 502 });
   }

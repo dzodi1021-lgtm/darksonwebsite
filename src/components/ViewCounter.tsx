@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Eye } from "lucide-react";
+
+const SEEN_KEY = "darkson-view-seen-v2";
 
 declare global {
   interface Window {
     darksonViewCount?: number;
-    darksonViewDone?: boolean;
     darksonViewJob?: Promise<number>;
   }
 }
@@ -17,12 +19,28 @@ function shortNumber(value: number) {
   }).format(value);
 }
 
+function seen() {
+  try {
+    return localStorage.getItem(SEEN_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function saveSeen() {
+  try {
+    localStorage.setItem(SEEN_KEY, "1");
+  } catch {
+    return;
+  }
+}
+
 function loadViews() {
   if (window.darksonViewJob) {
     return window.darksonViewJob;
   }
 
-  const method = window.darksonViewDone ? "GET" : "POST";
+  const method = seen() ? "GET" : "POST";
 
   window.darksonViewJob = fetch("/api/views", {
     method,
@@ -36,7 +54,10 @@ function loadViews() {
       const payload = (await response.json()) as { views?: number };
       const views = Number(payload.views) || 0;
 
-      window.darksonViewDone = true;
+      if (method === "POST") {
+        saveSeen();
+      }
+
       window.darksonViewCount = views;
 
       return views;
@@ -76,9 +97,9 @@ export function ViewCounter() {
   }, []);
 
   return (
-    <span className="view-counter mono">
-      <span className="view-counter-dot" aria-hidden="true" />
-      {views === null ? "Views -" : `${shortNumber(views)} views`}
+    <span className="view-counter mono" aria-label={`${views ?? 0} profile views`}>
+      <Eye className="view-counter-eye" aria-hidden="true" strokeWidth={2.2} />
+      <span>{views === null ? "0" : shortNumber(views)}</span>
     </span>
   );
 }

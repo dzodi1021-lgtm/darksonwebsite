@@ -185,22 +185,41 @@ body {
 .view-counter {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  gap: 0.45rem;
+  position: relative;
+  isolation: isolate;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.035);
-  padding: 0.2rem 0.55rem;
-  color: var(--text-muted);
-  font-size: 0.72rem;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.035)),
+    rgba(7, 7, 8, 0.72);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 12px 32px rgba(0, 0, 0, 0.36);
+  padding: 0.26rem 0.62rem;
+  color: rgba(250, 250, 250, 0.84);
+  font-size: 0.73rem;
+  font-weight: 600;
   line-height: 1rem;
+  letter-spacing: -0.02em;
+  overflow: hidden;
 }
 
-.view-counter-dot {
-  width: 0.35rem;
-  height: 0.35rem;
-  border-radius: 999px;
-  background: var(--accent);
-  box-shadow: 0 0 12px rgba(29, 185, 84, 0.45);
+.view-counter::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.22), transparent 36%);
+  opacity: 0.75;
+}
+
+.view-counter-eye {
+  width: 0.9rem;
+  height: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.18));
 }
 
 /* Subtle hover effect */
