@@ -6,9 +6,18 @@ export function Cursor() {
   useEffect(() => {
     const root = document.documentElement;
     const body = document.body;
+    const finePointer = window.matchMedia("(pointer: fine)");
 
     function set(name: string, value: number) {
       root.style.setProperty(name, `${value.toFixed(2)}px`);
+    }
+
+    function show() {
+      set("--mouse-x", window.innerWidth / 2);
+      set("--mouse-y", window.innerHeight / 2);
+      set("--lamp-x", window.innerWidth / 2);
+      set("--lamp-y", window.innerHeight / 2);
+      body.classList.add("cursor-ready");
     }
 
     function move(event: PointerEvent) {
@@ -21,6 +30,10 @@ export function Cursor() {
 
     function hide() {
       body.classList.remove("cursor-ready");
+    }
+
+    if (finePointer.matches) {
+      show();
     }
 
     window.addEventListener("pointermove", move, { passive: true });

@@ -3,17 +3,25 @@
 import { useState } from "react";
 import { ActivityCard } from "@/components/ActivityCard";
 import { Cursor } from "@/components/Cursor";
+import { DiscordInviteCard } from "@/components/DiscordInviteCard";
 import { SpotifyCard } from "@/components/SpotifyCard";
 import { StatusBadge } from "@/components/StatusBadge";
 import { ViewCounter } from "@/components/ViewCounter";
 import { avatarUrl, type LanyardData } from "@/libs/lanyard";
 import { useLanyard } from "@/hooks/useLanyard";
+import type { InviteData } from "@/libs/discord";
 
 interface ProfileCardProps {
   initialData: LanyardData | null;
+  initialInvite: InviteData | null;
+  initialViews: number | null;
 }
 
-export function ProfileCard({ initialData }: ProfileCardProps) {
+export function ProfileCard({
+  initialData,
+  initialInvite,
+  initialViews,
+}: ProfileCardProps) {
   const { data } = useLanyard(initialData);
   const [copied, setCopied] = useState(false);
 
@@ -47,7 +55,9 @@ export function ProfileCard({ initialData }: ProfileCardProps) {
   return (
     <main className="relative isolate flex min-h-dvh items-start justify-center overflow-hidden px-3 py-6 sm:min-h-screen sm:items-center sm:p-6">
       <Cursor />
-      <div className="relative z-10 w-full max-w-md">
+      <div className="relative z-10 w-full max-w-lg">
+        <DiscordInviteCard initialInvite={initialInvite} />
+
         <div className="mb-8 flex items-center gap-4 sm:mb-10 sm:gap-5">
           <button
             type="button"
@@ -87,15 +97,19 @@ export function ProfileCard({ initialData }: ProfileCardProps) {
           </button>
 
           <div className="min-w-0 flex-1">
-            <h1 className="truncate text-2xl font-semibold tracking-tight sm:text-3xl">
-              {displayName}
-            </h1>
-            <p className="mono mt-0.5 text-sm text-[var(--text-muted)] sm:mt-1">
-              @{username}
-            </p>
+            <div className="flex items-start justify-between gap-4">
+              <div className="min-w-0">
+                <h1 className="truncate text-2xl font-semibold tracking-tight sm:text-3xl">
+                  {displayName}
+                </h1>
+                <p className="mono mt-0.5 text-sm text-[var(--text-muted)] sm:mt-1">
+                  @{username}
+                </p>
+              </div>
+              <ViewCounter initialViews={initialViews} />
+            </div>
             <div className="mt-1.5 flex flex-wrap items-center gap-3 sm:mt-2">
               {data && <StatusBadge status={data.discord_status} />}
-              <ViewCounter />
             </div>
           </div>
         </div>

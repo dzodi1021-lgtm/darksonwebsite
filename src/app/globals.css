@@ -182,42 +182,91 @@ body {
   animation: pulse 2s ease-in-out infinite;
 }
 
+.discord-card {
+  position: relative;
+  display: block;
+  margin-bottom: 1.35rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 1.75rem;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(255, 255, 255, 0.3), transparent 26%),
+    linear-gradient(135deg, rgba(190, 131, 145, 0.92), rgba(126, 85, 98, 0.9));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 22px 70px rgba(0, 0, 0, 0.35);
+  padding: 0.85rem;
+  text-decoration: none;
+  transform: translateZ(0);
+}
+
+.discord-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.2), transparent 34%),
+    radial-gradient(circle at 92% 14%, rgba(255, 255, 255, 0.18), transparent 22%);
+  opacity: 0.72;
+  transition: opacity 180ms ease;
+}
+
+.discord-card:hover::before {
+  opacity: 1;
+}
+
+.discord-label {
+  position: absolute;
+  top: 0.75rem;
+  right: 1rem;
+  z-index: 2;
+  color: rgba(255, 255, 255, 0.32);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.discord-join {
+  position: absolute;
+  right: 0.85rem;
+  bottom: 0.85rem;
+  z-index: 2;
+  display: inline-flex;
+  min-width: 4.1rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.9rem;
+  background: #1f9d53;
+  padding: 0.76rem 0.95rem;
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 12px 28px rgba(20, 113, 60, 0.28);
+  transition:
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.discord-card:hover .discord-join {
+  background: #22b35f;
+  transform: translateY(-1px);
+}
+
 .view-counter {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  position: relative;
-  isolation: isolate;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 999px;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.035)),
-    rgba(7, 7, 8, 0.72);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    0 12px 32px rgba(0, 0, 0, 0.36);
-  padding: 0.26rem 0.62rem;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  min-width: 2.15rem;
+  padding-top: 0.38rem;
   color: rgba(250, 250, 250, 0.84);
-  font-size: 0.73rem;
+  font-size: 0.78rem;
   font-weight: 600;
   line-height: 1rem;
   letter-spacing: -0.02em;
-  overflow: hidden;
-}
-
-.view-counter::before {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  z-index: -1;
-  border-radius: inherit;
-  background: radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.22), transparent 36%);
-  opacity: 0.75;
 }
 
 .view-counter-eye {
-  width: 0.9rem;
-  height: 0.9rem;
+  width: 0.95rem;
+  height: 0.95rem;
   color: rgba(255, 255, 255, 0.9);
   filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.18));
 }

@@ -1,54 +1,17 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-
-interface CounterPayload {
-  count?: number;
-}
-
-const COUNTER_API_BASE_URL =
-  process.env.COUNTER_API_BASE_URL?.trim() || "https://api.counterapi.dev/v1";
-const VIEW_COUNTER_NAMESPACE =
-  process.env.VIEW_COUNTER_NAMESPACE?.trim() || "darksonwebsite";
-const VIEW_COUNTER_NAME =
-  process.env.VIEW_COUNTER_NAME?.trim() ||
-  (process.env.NODE_ENV === "development" ? "views-dev-v2" : "views-v2");
-const VIEW_COOKIE_NAME = "darkson_view_seen";
-const VIEW_COOKIE_AGE = 60 * 60 * 24 * 365;
+import {
+  readViews,
+  VIEW_COOKIE_AGE,
+  VIEW_COOKIE_NAME,
+  VIEW_COUNTER_NAME,
+} from "@/libs/views";
 
 export const dynamic = "force-dynamic";
 
-function counterUrl(action?: "up") {
-  const namespace = encodeURIComponent(VIEW_COUNTER_NAMESPACE);
-  const name = encodeURIComponent(VIEW_COUNTER_NAME);
-  const suffix = action ? `/${action}` : "";
-
-  return `${COUNTER_API_BASE_URL}/${namespace}/${name}${suffix}`;
-}
-
-async function read(action?: "up") {
-  const response = await fetch(counterUrl(action), {
-    cache: "no-store",
-    headers: {
-      Accept: "application/json",
-    },
-  });
-
-  if (response.status === 404) {
-    return 0;
-  }
-
-  if (!response.ok) {
-    throw new Error("Counter request failed");
-  }
-
-  const payload = (await response.json()) as CounterPayload;
-
-  return Number.isFinite(payload.count) ? Number(payload.count) : 0;
-}
-
 export async function GET() {
   try {
-    const views = await read();
+    const views = await readViews();
 
     return NextResponse.json(
       { views },
@@ -67,7 +30,7 @@ export async function POST() {
   try {
     const cookieStore = await cookies();
     const alreadySeen = cookieStore.get(VIEW_COOKIE_NAME)?.value === VIEW_COUNTER_NAME;
-    const views = await read(alreadySeen ? undefined : "up");
+    const views = await readViews(alreadySeen ? undefined : "up");
     const response = NextResponse.json(
       { views },
       {

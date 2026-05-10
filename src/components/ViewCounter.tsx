@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Eye } from "lucide-react";
 
-const SEEN_KEY = "darkson-view-seen-v2";
+const SEEN_KEY = "darkson-view-seen-v3";
 
 declare global {
   interface Window {
@@ -69,8 +69,14 @@ function loadViews() {
   return window.darksonViewJob;
 }
 
-export function ViewCounter() {
-  const [views, setViews] = useState<number | null>(null);
+interface ViewCounterProps {
+  initialViews: number | null;
+}
+
+export function ViewCounter({ initialViews }: ViewCounterProps) {
+  const [views, setViews] = useState<number | null>(
+    typeof initialViews === "number" && initialViews > 0 ? initialViews : null,
+  );
 
   useEffect(() => {
     let alive = true;
@@ -87,19 +93,19 @@ export function ViewCounter() {
       })
       .catch(() => {
         if (alive) {
-          setViews(window.darksonViewCount ?? 0);
+          setViews(window.darksonViewCount ?? initialViews ?? null);
         }
       });
 
     return () => {
       alive = false;
     };
-  }, []);
+  }, [initialViews]);
 
   return (
-    <span className="view-counter mono" aria-label={`${views ?? 0} profile views`}>
+    <span className="view-counter mono" aria-label={`${views ?? initialViews ?? 0} profile views`}>
       <Eye className="view-counter-eye" aria-hidden="true" strokeWidth={2.2} />
-      <span>{views === null ? "0" : shortNumber(views)}</span>
+      {views !== null && <span>{shortNumber(views)}</span>}
     </span>
   );
 }

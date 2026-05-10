@@ -1,4 +1,5 @@
 import { ProfileCard } from "@/components/ProfileCard";
+import { getInvite } from "@/libs/discord";
 import {
   getLanyardUserId,
   LANYARD_REST_URL,
@@ -6,6 +7,7 @@ import {
   type LanyardData,
   type RawLanyardData,
 } from "@/libs/lanyard";
+import { readViews } from "@/libs/views";
 
 export const dynamic = "force-dynamic";
 
@@ -31,7 +33,17 @@ async function presence(): Promise<LanyardData | null> {
 }
 
 export default async function Home() {
-  const data = await presence();
+  const [data, invite, views] = await Promise.all([
+    presence(),
+    getInvite(),
+    readViews().catch(() => null),
+  ]);
 
-  return <ProfileCard initialData={data} />;
+  return (
+    <ProfileCard
+      initialData={data}
+      initialInvite={invite}
+      initialViews={views}
+    />
+  );
 }
