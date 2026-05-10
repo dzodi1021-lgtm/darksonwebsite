@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --bg: #0a0a0a;
   --text: #fafafa;
@@ -12,29 +16,12 @@
   box-sizing: border-box;
 }
 
-html,
-body {
-  margin: 0;
-  min-height: 100dvh;
-}
-
 body {
   background: var(--bg);
   color: var(--text);
   font-family: 'Inter', system-ui, sans-serif;
+  min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
-}
-
-button,
-input,
-textarea,
-select {
-  font: inherit;
-}
-
-img,
-svg {
-  display: block;
 }
 
 @media (pointer: fine) {
@@ -49,6 +36,201 @@ svg {
   color: var(--bg);
 }
 
+.mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.cursor-glow,
+.cursor-dot {
+  pointer-events: none;
+  position: fixed;
+  opacity: 0;
+}
+
+.cursor-glow {
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  transition: opacity 220ms ease;
+}
+
+.cursor-glow::before,
+.cursor-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.cursor-glow::before {
+  background:
+    radial-gradient(
+      38px circle at var(--lamp-x, 50%) var(--lamp-y, 50%),
+      rgba(255, 255, 255, 0.36),
+      rgba(255, 255, 255, 0.18) 30%,
+      rgba(255, 255, 255, 0.06) 58%,
+      transparent 74%
+    ),
+    radial-gradient(
+      135px circle at var(--lamp-x, 50%) var(--lamp-y, 50%),
+      rgba(255, 255, 255, 0.1),
+      rgba(241, 245, 249, 0.045) 46%,
+      rgba(255, 255, 255, 0.018) 66%,
+      transparent 84%
+    ),
+    radial-gradient(
+      260px circle at var(--lamp-x, 50%) var(--lamp-y, 50%),
+      rgba(255, 255, 255, 0.035),
+      rgba(148, 163, 184, 0.016) 48%,
+      transparent 78%
+    );
+  filter: blur(0.8px) saturate(1.04);
+  mix-blend-mode: screen;
+}
+
+.cursor-glow::after {
+  background: radial-gradient(
+    300px circle at var(--lamp-x, 50%) var(--lamp-y, 50%),
+    transparent 0 30%,
+    rgba(0, 0, 0, 0.04) 60%,
+    rgba(0, 0, 0, 0.22) 100%
+  );
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+}
+
+.cursor-dot {
+  top: var(--mouse-y, 50%);
+  left: var(--mouse-x, 50%);
+  z-index: 100;
+  width: 8px;
+  height: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 0 8px rgba(255, 255, 255, 0.82),
+    0 0 18px rgba(255, 255, 255, 0.34);
+  transform: translate(-50%, -50%);
+  transition: opacity 180ms ease, width 160ms ease, height 160ms ease;
+}
+
+.cursor-ready .cursor-glow,
+.cursor-ready .cursor-dot {
+  opacity: 1;
+}
+
+@media (pointer: coarse) {
+  .cursor-glow,
+  .cursor-dot {
+    display: none;
+  }
+}
+
+/* Spotify progress bar */
+.progress-bar {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.5s linear;
+}
+
+/* Lyrics loader */
+@keyframes lyric-wave {
+  0%, 100% { transform: scaleY(0.35); opacity: 0.45; }
+  50% { transform: scaleY(1); opacity: 1; }
+}
+
+.lyrics-loader {
+  display: inline-flex;
+  align-items: end;
+  gap: 4px;
+  height: 20px;
+  color: var(--accent);
+}
+
+.lyrics-loader span {
+  width: 4px;
+  height: 18px;
+  border-radius: 999px;
+  background: currentColor;
+  transform-origin: bottom;
+  animation: lyric-wave 0.58s ease-in-out infinite;
+}
+
+.lyrics-loader span:nth-child(2) {
+  animation-delay: 0.14s;
+}
+
+.lyrics-loader span:nth-child(3) {
+  animation-delay: 0.28s;
+}
+
+/* Status indicator pulse */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.status-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.view-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.035);
+  padding: 0.2rem 0.55rem;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  line-height: 1rem;
+}
+
+.view-counter-dot {
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 12px rgba(29, 185, 84, 0.45);
+}
+
+/* Subtle hover effect */
+.hover-lift {
+  transition: all 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  border-color: #3f3f46;
+}
+
+/* Playing indicator */
+@keyframes playing {
+  0%, 100% { transform: scaleY(0.4); }
+  50% { transform: scaleY(1); }
+}
+
+.playing-bar {
+  width: 3px;
+  height: 14px;
+  background: var(--accent);
+  border-radius: 1px;
+}
+
+.playing-bar:nth-child(1) { animation: playing 0.8s ease-in-out infinite; }
+.playing-bar:nth-child(2) { animation: playing 0.8s ease-in-out 0.2s infinite; }
+.playing-bar:nth-child(3) { animation: playing 0.8s ease-in-out 0.4s infinite; }
+
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }

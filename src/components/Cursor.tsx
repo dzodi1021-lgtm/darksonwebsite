@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import styles from "./Cursor.module.css";
 
 export function Cursor() {
   useEffect(() => {
@@ -36,8 +35,8 @@ export function Cursor() {
 
   return (
     <>
-      <div className={styles.glow} aria-hidden="true" />
-      <div className={styles.dot} aria-hidden="true" />
+      <div className="cursor-glow" aria-hidden="true" />
+      <div className="cursor-dot" aria-hidden="true" />
     </>
   );
 }

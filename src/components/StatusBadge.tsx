@@ -1,7 +1,5 @@
 "use client";
 
-import styles from "./StatusBadge.module.css";
-
 interface StatusBadgeProps {
   status: "online" | "idle" | "dnd" | "offline";
 }
@@ -29,12 +27,12 @@ export function StatusBadge({ status }: StatusBadgeProps) {
   const config = statusConfig[status];
 
   return (
-    <div className={styles.root}>
+    <div className="inline-flex items-center gap-2">
       <span
-        className={styles.dot}
+        className="w-2.5 h-2.5 rounded-full status-pulse"
         style={{ backgroundColor: config.color }}
       />
-      <span className={styles.label}>{config.label}</span>
+      <span className="text-sm text-[var(--text-muted)]">{config.label}</span>
     </div>
   );
 }
