@@ -82,7 +82,6 @@ export function DiscordInviteCard({ initialInvite }: DiscordInviteCardProps) {
       <div className="flex min-w-0 items-center gap-3 sm:gap-4">
         {serverIcon(invite)}
         <div className="min-w-0 flex-1">
-          <span className="discord-label">Discord server</span>
           <h2 className="truncate text-lg font-semibold leading-tight text-white sm:text-xl">
             {invite.name}
           </h2>
