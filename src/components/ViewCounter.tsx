@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import styles from "./ViewCounter.module.css";
 
 declare global {
   interface Window {
@@ -76,8 +77,8 @@ export function ViewCounter() {
   }, []);
 
   return (
-    <span className="view-counter mono">
-      <span className="view-counter-dot" aria-hidden="true" />
+    <span className={styles.root}>
+      <span className={styles.dot} aria-hidden="true" />
       {views === null ? "Views -" : `${shortNumber(views)} views`}
     </span>
   );

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { LanyardSpotify } from "@/hooks/useLanyard";
 import { findCurrentLyricIndex, type LyricsPayload } from "@/libs/lyrics";
+import styles from "./SpotifyCard.module.css";
 
 interface SpotifyCardProps {
   spotify: LanyardSpotify;
@@ -30,7 +31,7 @@ function time(ms: number) {
 
 function Logo() {
   return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+    <svg viewBox="0 0 24 24" className={styles.logo} aria-hidden="true">
       <circle cx="12" cy="12" r="12" fill="#1ed760" />
       <path
         d="M6.35 9.25c3.7-1.12 8.53-.71 11.48 1.02M7.05 12.26c3.1-.91 7.03-.58 9.43.85M7.55 15.05c2.36-.68 5.25-.43 7.15.68"
@@ -186,61 +187,61 @@ export function SpotifyCard({ spotify }: SpotifyCardProps) {
       : lyrics.synced.slice(1, 3);
 
   return (
-    <div className="rounded-xl border border-[var(--border)] bg-[#111111] p-4 hover-lift sm:p-5">
-      <div className="flex items-center gap-4">
+    <div className={styles.card}>
+      <div className={styles.row}>
         <img
           src={spotify.album_art_url}
           alt={spotify.album}
-          className="h-14 w-14 rounded-lg object-cover shadow-lg sm:h-16 sm:w-16"
+          className={styles.art}
         />
 
-        <div className="min-w-0 flex-1">
-          <div className="mb-1 flex items-center gap-2 text-[var(--accent)]">
+        <div className={styles.body}>
+          <div className={styles.brand}>
             <Logo />
-            <span className="text-xs font-medium uppercase tracking-wide">
+            <span className={styles.brandText}>
               Spotify
             </span>
           </div>
-          <p className="truncate font-semibold">{spotify.song}</p>
-          <p className="truncate text-sm text-[var(--text-muted)]">
+          <p className={styles.song}>{spotify.song}</p>
+          <p className={styles.artist}>
             {spotify.artist}
           </p>
         </div>
       </div>
 
-      <div className="mt-4">
-        <div className="progress-bar">
-          <div className="progress-fill" style={{ width: `${progress}%` }} />
+      <div className={styles.progressBlock}>
+        <div className={styles.progress}>
+          <div className={styles.fill} style={{ width: `${progress}%` }} />
         </div>
-        <div className="mono mt-2 flex justify-between text-xs text-[var(--text-muted)]">
+        <div className={styles.timeRow}>
           <span>{time(elapsed)}</span>
           <span>{time(duration)}</span>
         </div>
       </div>
 
-      <div className="mt-4 rounded-xl border border-[var(--border)] bg-[#0d0d0d] p-3 sm:p-4">
-        <div className="flex items-center justify-between gap-3">
-          <span className="text-xs uppercase tracking-[0.2em] text-[var(--text-muted)]">
+      <div className={styles.lyrics}>
+        <div className={styles.lyricsHead}>
+          <span className={styles.lyricsLabel}>
             {lyrics.synced.length > 0 ? "Live lyrics" : "Lyrics"}
           </span>
         </div>
 
         {lyricsState === "ready" && lyrics.synced.length > 0 && (
-          <div className="mt-3 min-h-[4.5rem] space-y-2 transition-opacity duration-150">
+          <div className={styles.live}>
             {previousLine && (
-              <p className="truncate text-sm text-[var(--text-muted)]">
+              <p className={styles.mutedLine}>
                 {previousLine.text}
               </p>
             )}
             {currentLine && (
-              <p className="text-[0.95rem] font-medium leading-6 sm:text-base">
+              <p className={styles.currentLine}>
                 {currentLine.text}
               </p>
             )}
             {upcomingLines.map((line) => (
               <p
                 key={`${line.startTimeMs}-${line.text}`}
-                className="truncate text-sm text-[var(--text-muted)]"
+                className={styles.mutedLine}
               >
                 {line.text}
               </p>
@@ -249,11 +250,11 @@ export function SpotifyCard({ spotify }: SpotifyCardProps) {
         )}
 
         {lyricsState === "ready" && lyrics.synced.length === 0 && (
-          <div className="mt-3 min-h-[4.5rem] space-y-1.5 transition-opacity duration-150">
+          <div className={styles.plain}>
             {lyrics.plain.slice(0, 4).map((line, index) => (
               <p
                 key={`${line}-${index}`}
-                className="text-sm text-[var(--text-muted)]"
+                className={styles.plainLine}
               >
                 {line}
               </p>
@@ -262,7 +263,7 @@ export function SpotifyCard({ spotify }: SpotifyCardProps) {
         )}
 
         {lyricsState === "empty" && (
-          <p className="mt-3 min-h-[4.5rem] text-sm text-[var(--text-muted)]">
+          <p className={styles.message}>
             {lyrics.instrumental
               ? "This track is instrumental."
               : "Lyrics are not available for this track."}
@@ -270,14 +271,14 @@ export function SpotifyCard({ spotify }: SpotifyCardProps) {
         )}
 
         {lyricsState === "error" && (
-          <p className="mt-3 min-h-[4.5rem] text-sm text-[var(--text-muted)]">
+          <p className={styles.message}>
             Could not load live lyrics right now.
           </p>
         )}
 
         {lyricsState === "loading" && (
-          <div className="mt-3 flex min-h-[4.5rem] items-center gap-3 text-sm text-[var(--text-muted)]">
-            <span className="lyrics-loader" aria-hidden="true">
+          <div className={styles.loading}>
+            <span className={styles.loader} aria-hidden="true">
               <span />
               <span />
               <span />

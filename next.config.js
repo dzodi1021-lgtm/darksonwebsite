@@ -1,4 +1,46 @@
+const crypto = require("crypto");
+const path = require("path");
 const JavaScriptObfuscator = require("webpack-obfuscator");
+
+function getCssName(context, _localIdentName, localName) {
+  const relativePath = path.relative(context.rootContext, context.resourcePath);
+  const hash = crypto
+    .createHash("sha256")
+    .update(`${relativePath}:${localName}`)
+    .digest("base64url")
+    .slice(0, 10);
+
+  return `_${hash}`;
+}
+
+function hideCssNames(rule) {
+  if (!rule || typeof rule !== "object") {
+    return;
+  }
+
+  if (Array.isArray(rule.oneOf)) {
+    for (const child of rule.oneOf) {
+      hideCssNames(child);
+    }
+  }
+
+  if (!Array.isArray(rule.use)) {
+    return;
+  }
+
+  for (const item of rule.use) {
+    if (
+      item &&
+      typeof item === "object" &&
+      typeof item.loader === "string" &&
+      item.loader.includes("css-loader") &&
+      item.options?.modules &&
+      typeof item.options.modules === "object"
+    ) {
+      item.options.modules.getLocalIdent = getCssName;
+    }
+  }
+}
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -38,6 +80,10 @@ const nextConfig = {
   },
   webpack: (config, { dev, isServer }) => {
     if (!dev && !isServer) {
+      for (const rule of config.module.rules) {
+        hideCssNames(rule);
+      }
+
       config.plugins.push(
         new JavaScriptObfuscator(
           {

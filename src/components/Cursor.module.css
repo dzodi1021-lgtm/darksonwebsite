@@ -1,0 +1,85 @@
+.glow,
+.dot {
+  pointer-events: none;
+  position: fixed;
+  opacity: 0;
+}
+
+.glow {
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  transition: opacity 220ms ease;
+}
+
+.glow::before,
+.glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.glow::before {
+  background:
+    radial-gradient(
+      38px circle at var(--lamp-x, 50%) var(--lamp-y, 50%),
+      rgba(255, 255, 255, 0.36),
+      rgba(255, 255, 255, 0.18) 30%,
+      rgba(255, 255, 255, 0.06) 58%,
+      transparent 74%
+    ),
+    radial-gradient(
+      135px circle at var(--lamp-x, 50%) var(--lamp-y, 50%),
+      rgba(255, 255, 255, 0.1),
+      rgba(241, 245, 249, 0.045) 46%,
+      rgba(255, 255, 255, 0.018) 66%,
+      transparent 84%
+    ),
+    radial-gradient(
+      260px circle at var(--lamp-x, 50%) var(--lamp-y, 50%),
+      rgba(255, 255, 255, 0.035),
+      rgba(148, 163, 184, 0.016) 48%,
+      transparent 78%
+    );
+  filter: blur(0.8px) saturate(1.04);
+  mix-blend-mode: screen;
+}
+
+.glow::after {
+  background: radial-gradient(
+    300px circle at var(--lamp-x, 50%) var(--lamp-y, 50%),
+    transparent 0 30%,
+    rgba(0, 0, 0, 0.04) 60%,
+    rgba(0, 0, 0, 0.22) 100%
+  );
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+}
+
+.dot {
+  top: var(--mouse-y, 50%);
+  left: var(--mouse-x, 50%);
+  z-index: 100;
+  width: 8px;
+  height: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 0 8px rgba(255, 255, 255, 0.82),
+    0 0 18px rgba(255, 255, 255, 0.34);
+  transform: translate(-50%, -50%);
+  transition: opacity 180ms ease, width 160ms ease, height 160ms ease;
+}
+
+:global(body.cursor-ready) .glow,
+:global(body.cursor-ready) .dot {
+  opacity: 1;
+}
+
+@media (pointer: coarse) {
+  .glow,
+  .dot {
+    display: none;
+  }
+}

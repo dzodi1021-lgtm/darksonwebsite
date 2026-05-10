@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { activityIcon, type LanyardActivity } from "@/hooks/useLanyard";
+import styles from "./ActivityCard.module.css";
 
 interface ActivityCardProps {
   activity: LanyardActivity;
@@ -84,13 +85,13 @@ export function ActivityCard({ activity }: ActivityCardProps) {
   const fallback = primaryText.charAt(0).toUpperCase();
 
   return (
-    <div className="rounded-xl border border-[var(--border)] bg-[#111111] p-4 hover-lift sm:p-5">
-      <div className="flex items-center gap-4">
+    <div className={styles.card}>
+      <div className={styles.row}>
         {imageUrl && !iconFailed && (
           <img
             src={imageUrl}
             alt={activity.name}
-            className="h-12 w-12 flex-shrink-0 rounded-lg object-cover sm:h-14 sm:w-14"
+            className={styles.icon}
             onError={() => setIconFailed(true)}
           />
         )}
@@ -98,53 +99,53 @@ export function ActivityCard({ activity }: ActivityCardProps) {
           <img
             src={emojiUrl}
             alt={activity.emoji?.name || "Activity emoji"}
-            className="h-12 w-12 flex-shrink-0 rounded-lg bg-[#171717] object-cover p-2 sm:h-14 sm:w-14"
+            className={styles.emojiIcon}
           />
         )}
         {(!imageUrl || iconFailed) && !emojiUrl && activity.emoji?.name && (
-          <div className="grid h-12 w-12 flex-shrink-0 place-items-center rounded-lg bg-[#171717] text-2xl sm:h-14 sm:w-14">
+          <div className={styles.emojiBox}>
             <span aria-hidden="true">{activity.emoji.name}</span>
           </div>
         )}
         {(!imageUrl || iconFailed) && !emojiUrl && !activity.emoji?.name && (
-          <div className="grid h-12 w-12 flex-shrink-0 place-items-center rounded-lg bg-[#171717] text-lg font-semibold text-[var(--text-muted)] sm:h-14 sm:w-14">
+          <div className={styles.fallbackBox}>
             {fallback}
           </div>
         )}
 
-        <div className="flex-1 min-w-0">
-          <span className="text-xs text-[var(--text-muted)] uppercase tracking-wide">
+        <div className={styles.body}>
+          <span className={styles.label}>
             {label(activity.type)}
           </span>
-          <p className="font-semibold truncate mt-0.5">{primaryText}</p>
+          <p className={styles.title}>{primaryText}</p>
           {activity.type === 4 && activity.details && (
-            <p className="text-sm text-[var(--text-muted)] truncate">
+            <p className={styles.line}>
               {activity.details}
             </p>
           )}
           {activity.type === 4 &&
             activity.name &&
             activity.name !== "Custom Status" && (
-              <p className="text-sm text-[var(--text-muted)] truncate">
+              <p className={styles.line}>
                 {activity.name}
               </p>
             )}
           {activity.details &&
             (activity.type !== 4 ? (
-              <p className="text-sm text-[var(--text-muted)] truncate">
+              <p className={styles.line}>
                 {activity.details}
               </p>
             ) : null)}
           {activity.state &&
             (activity.type !== 4 ? (
-              <p className="text-sm text-[var(--text-muted)] truncate">
+              <p className={styles.line}>
                 {activity.state}
               </p>
             ) : null)}
         </div>
 
         {elapsed && (
-          <span className="text-xs text-[var(--text-muted)] mono flex-shrink-0">
+          <span className={styles.time}>
             {elapsed}
           </span>
         )}

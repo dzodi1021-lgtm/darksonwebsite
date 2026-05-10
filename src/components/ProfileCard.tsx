@@ -8,6 +8,7 @@ import { StatusBadge } from "@/components/StatusBadge";
 import { ViewCounter } from "@/components/ViewCounter";
 import { avatarUrl, type LanyardData } from "@/libs/lanyard";
 import { useLanyard } from "@/hooks/useLanyard";
+import styles from "./ProfileCard.module.css";
 
 interface ProfileCardProps {
   initialData: LanyardData | null;
@@ -45,14 +46,14 @@ export function ProfileCard({ initialData }: ProfileCardProps) {
   };
 
   return (
-    <main className="relative isolate flex min-h-dvh items-start justify-center overflow-hidden px-3 py-6 sm:min-h-screen sm:items-center sm:p-6">
+    <main className={styles.shell}>
       <Cursor />
-      <div className="relative z-10 w-full max-w-md">
-        <div className="mb-8 flex items-center gap-4 sm:mb-10 sm:gap-5">
+      <div className={styles.wrap}>
+        <div className={styles.head}>
           <button
             type="button"
             onClick={copyUsername}
-            className="group relative flex-shrink-0 cursor-pointer"
+            className={styles.avatarButton}
             title="Click to copy username"
           >
             <img
@@ -60,12 +61,12 @@ export function ProfileCard({ initialData }: ProfileCardProps) {
               alt={`Discord avatar of ${displayName}`}
               width={96}
               height={96}
-              className="h-20 w-20 rounded-full object-cover transition-transform group-hover:scale-105 sm:h-24 sm:w-24"
+              className={styles.avatar}
             />
 
             {data && (
               <span
-                className="absolute bottom-0.5 right-0.5 h-4 w-4 rounded-full border-[3px] border-[var(--bg)] sm:bottom-1 sm:right-1 sm:h-5 sm:w-5"
+                className={styles.statusDot}
                 style={{
                   backgroundColor:
                     data.discord_status === "online"
@@ -80,27 +81,27 @@ export function ProfileCard({ initialData }: ProfileCardProps) {
             )}
 
             {copied && (
-              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 rounded bg-[var(--accent)] px-2 py-1 text-xs text-black">
+              <span className={styles.copy}>
                 Copied!
               </span>
             )}
           </button>
 
-          <div className="min-w-0 flex-1">
-            <h1 className="truncate text-2xl font-semibold tracking-tight sm:text-3xl">
+          <div className={styles.info}>
+            <h1 className={styles.name}>
               {displayName}
             </h1>
-            <p className="mono mt-0.5 text-sm text-[var(--text-muted)] sm:mt-1">
+            <p className={styles.username}>
               @{username}
             </p>
-            <div className="mt-1.5 flex flex-wrap items-center gap-3 sm:mt-2">
+            <div className={styles.meta}>
               {data && <StatusBadge status={data.discord_status} />}
               <ViewCounter />
             </div>
           </div>
         </div>
 
-        <div className="space-y-3 sm:space-y-4">
+        <div className={styles.stack}>
           {data?.listening_to_spotify && data.spotify && (
             <SpotifyCard spotify={data.spotify} />
           )}
@@ -113,8 +114,8 @@ export function ProfileCard({ initialData }: ProfileCardProps) {
           ))}
 
           {!data?.listening_to_spotify && activities.length === 0 && (
-            <div className="rounded-xl border border-[var(--border)] bg-[#111111] p-4 text-center sm:p-6">
-              <p className="text-sm text-[var(--text-muted)]">
+            <div className={styles.empty}>
+              <p className={styles.emptyText}>
                 Nothing is happening right now.
               </p>
             </div>
