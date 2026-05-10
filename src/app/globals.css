@@ -136,8 +136,11 @@ body {
 
 .progress-fill {
   height: 100%;
-  background: var(--accent);
+  background: #fff;
   border-radius: 2px;
+  box-shadow:
+    0 0 10px rgba(255, 255, 255, 0.55),
+    0 0 22px rgba(255, 255, 255, 0.16);
   transition: width 0.5s linear;
 }
 
@@ -184,18 +187,15 @@ body {
 
 .discord-card {
   position: relative;
-  display: block;
-  margin-bottom: 1.35rem;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 1.75rem;
-  background:
-    radial-gradient(circle at 12% 0%, rgba(255, 255, 255, 0.3), transparent 26%),
-    linear-gradient(135deg, rgba(190, 131, 145, 0.92), rgba(126, 85, 98, 0.9));
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    0 22px 70px rgba(0, 0, 0, 0.35);
-  padding: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+  border: 0;
+  border-radius: 1.35rem;
+  background: transparent;
+  padding: 0.35rem 0;
   text-decoration: none;
   transform: translateZ(0);
 }
@@ -203,12 +203,12 @@ body {
 .discord-card::before {
   content: "";
   position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(115deg, rgba(255, 255, 255, 0.2), transparent 34%),
-    radial-gradient(circle at 92% 14%, rgba(255, 255, 255, 0.18), transparent 22%);
-  opacity: 0.72;
-  transition: opacity 180ms ease;
+  right: 4.75rem;
+  bottom: -0.45rem;
+  left: 4.75rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent);
+  opacity: 0.8;
 }
 
 .discord-card:hover::before {
@@ -216,38 +216,60 @@ body {
 }
 
 .discord-label {
-  position: absolute;
-  top: 0.75rem;
-  right: 1rem;
-  z-index: 2;
-  color: rgba(255, 255, 255, 0.32);
-  font-size: 0.72rem;
+  display: inline-flex;
+  margin-bottom: 0.2rem;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 0.68rem;
   font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .discord-join {
-  position: absolute;
-  right: 0.85rem;
-  bottom: 0.85rem;
-  z-index: 2;
   display: inline-flex;
-  min-width: 4.1rem;
+  min-width: 4.35rem;
   align-items: center;
   justify-content: center;
-  border-radius: 0.9rem;
-  background: #1f9d53;
-  padding: 0.76rem 0.95rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.62rem 0.9rem;
   color: #fff;
-  font-weight: 700;
-  box-shadow: 0 12px 28px rgba(20, 113, 60, 0.28);
+  font-size: 0.9rem;
+  font-weight: 650;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 12px 30px rgba(0, 0, 0, 0.24);
   transition:
+    border-color 160ms ease,
     background 160ms ease,
     transform 160ms ease;
 }
 
 .discord-card:hover .discord-join {
-  background: #22b35f;
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.13);
   transform: translateY(-1px);
+}
+
+.discord-live-dot {
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 999px;
+  background: #42d66a;
+  box-shadow: 0 0 12px rgba(66, 214, 106, 0.7);
+}
+
+@media (max-width: 420px) {
+  .discord-card {
+    align-items: flex-start;
+  }
+
+  .discord-join {
+    min-width: 3.85rem;
+    padding: 0.55rem 0.78rem;
+    font-size: 0.82rem;
+  }
 }
 
 .view-counter {

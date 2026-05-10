@@ -22,13 +22,13 @@ function serverIcon(invite: InviteData) {
         alt={`${invite.name} server icon`}
         width={72}
         height={72}
-        className="h-16 w-16 rounded-2xl object-cover shadow-[0_16px_38px_rgba(0,0,0,0.25)] sm:h-[72px] sm:w-[72px]"
+        className="h-14 w-14 rounded-2xl object-cover shadow-[0_14px_36px_rgba(0,0,0,0.32)] ring-1 ring-white/10 sm:h-16 sm:w-16"
       />
     );
   }
 
   return (
-    <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 text-2xl font-semibold text-white shadow-[0_16px_38px_rgba(0,0,0,0.25)] sm:h-[72px] sm:w-[72px]">
+    <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-xl font-semibold text-white shadow-[0_14px_36px_rgba(0,0,0,0.32)] ring-1 ring-white/10 sm:h-16 sm:w-16">
       {invite.name.charAt(0).toUpperCase()}
     </span>
   );
@@ -79,18 +79,16 @@ export function DiscordInviteCard({ initialInvite }: DiscordInviteCardProps) {
       rel="noreferrer"
       aria-label={`Join ${invite.name} on Discord`}
     >
-      <span className="discord-label" aria-hidden="true">
-        Discord
-      </span>
-      <div className="relative z-10 flex items-center gap-3 pr-20 sm:gap-4 sm:pr-24">
+      <div className="flex min-w-0 items-center gap-3 sm:gap-4">
         {serverIcon(invite)}
         <div className="min-w-0 flex-1">
+          <span className="discord-label">Discord server</span>
           <h2 className="truncate text-lg font-semibold leading-tight text-white sm:text-xl">
             {invite.name}
           </h2>
           <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-medium text-white/72 sm:text-sm">
             <span className="inline-flex items-center gap-1.5">
-              <span className="h-2 w-2 rounded-full bg-[#42d66a] shadow-[0_0_12px_rgba(66,214,106,0.7)]" />
+              <span className="discord-live-dot" />
               {count(invite.online)} Online
             </span>
             <span>{count(invite.members)} Members</span>
