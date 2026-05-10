@@ -1,32 +1,20 @@
 "use client";
 
-import { useState, type CSSProperties } from "react";
+import { useState } from "react";
 import { ActivityCard } from "@/components/ActivityCard";
 import { Cursor } from "@/components/Cursor";
 import { SpotifyCard } from "@/components/SpotifyCard";
 import { StatusBadge } from "@/components/StatusBadge";
 import { ViewCounter } from "@/components/ViewCounter";
 import { avatarUrl, type LanyardData } from "@/libs/lanyard";
-import type { NameStyle, SiteConfig } from "@/libs/site-config";
 import { useLanyard } from "@/hooks/useLanyard";
 import styles from "./ProfileCard.module.css";
 
 interface ProfileCardProps {
   initialData: LanyardData | null;
-  settings: SiteConfig;
 }
 
-const nameStyles: Record<NameStyle, string> = {
-  clean: styles.clean,
-  glow: styles.glow,
-  frost: styles.frost,
-  chrome: styles.chrome,
-  ghost: styles.ghost,
-  pulse: styles.pulse,
-  outline: styles.outline,
-};
-
-export function ProfileCard({ initialData, settings }: ProfileCardProps) {
+export function ProfileCard({ initialData }: ProfileCardProps) {
   const { data } = useLanyard(initialData);
   const [copied, setCopied] = useState(false);
 
@@ -34,20 +22,11 @@ export function ProfileCard({ initialData, settings }: ProfileCardProps) {
     data?.activities.filter((activity) => activity.type !== 2) || [];
 
   const displayName =
-    settings.displayName ||
     data?.discord_user?.global_name ||
     data?.discord_user?.username ||
     "DarkSon";
-  const username = settings.username || data?.discord_user?.username || "darkson";
-  const avatar = settings.avatarUrl || avatarUrl(data?.discord_user, 256);
-  const nameClass = [styles.name, nameStyles[settings.nameStyle] || styles.glow]
-    .filter(Boolean)
-    .join(" ");
-  const shellStyle = settings.backgroundUrl
-    ? ({
-        "--profile-bg": `url("${settings.backgroundUrl.replaceAll('"', "%22")}")`,
-      } as CSSProperties)
-    : undefined;
+  const username = data?.discord_user?.username || "darkson";
+  const avatar = avatarUrl(data?.discord_user, 256);
 
   const copyUsername = async () => {
     try {
@@ -67,7 +46,7 @@ export function ProfileCard({ initialData, settings }: ProfileCardProps) {
   };
 
   return (
-    <main className={styles.shell} style={shellStyle}>
+    <main className={styles.shell}>
       <Cursor />
       <div className={styles.wrap}>
         <div className={styles.head}>
@@ -109,7 +88,7 @@ export function ProfileCard({ initialData, settings }: ProfileCardProps) {
           </button>
 
           <div className={styles.info}>
-            <h1 className={nameClass}>
+            <h1 className={styles.name}>
               {displayName}
             </h1>
             <p className={styles.username}>
@@ -123,18 +102,6 @@ export function ProfileCard({ initialData, settings }: ProfileCardProps) {
         </div>
 
         <div className={styles.stack}>
-          {settings.musicUrl && (
-            <div className={styles.music}>
-              <div>
-                <p className={styles.musicKicker}>Page soundtrack</p>
-                <p className={styles.musicTitle}>
-                  {settings.musicTitle || "Custom track"}
-                </p>
-              </div>
-              <audio className={styles.player} src={settings.musicUrl} controls loop />
-            </div>
-          )}
-
           {data?.listening_to_spotify && data.spotify && (
             <SpotifyCard spotify={data.spotify} />
           )}

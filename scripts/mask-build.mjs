@@ -13,7 +13,8 @@ const textFiles = new Set([
   ".rsc",
   ".txt",
 ]);
-const names = /\b[A-Za-z][A-Za-z0-9]+_[A-Za-z0-9_-]+__[A-Za-z0-9_-]+\b/g;
+const names =
+  /\b(?:ProfileCard|ActivityCard|SpotifyCard|StatusBadge|ViewCounter|Cursor)_[A-Za-z0-9_-]+__[A-Za-z0-9_-]+\b/g;
 const map = new Map();
 
 function code(value) {
