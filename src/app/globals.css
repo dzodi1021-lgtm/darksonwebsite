@@ -293,6 +293,105 @@ body {
   filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.18));
 }
 
+.crypto-dock {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.crypto-chip {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.095), rgba(255, 255, 255, 0.025)),
+    rgba(12, 12, 13, 0.72);
+  padding: 0.6rem 0.65rem;
+  color: rgba(255, 255, 255, 0.86);
+  text-decoration: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 16px 38px rgba(0, 0, 0, 0.28);
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.crypto-chip:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04)),
+    rgba(18, 18, 19, 0.82);
+  transform: translateY(-1px);
+}
+
+.crypto-icon {
+  display: inline-flex;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.crypto-icon svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.crypto-btc .crypto-icon {
+  color: #f7931a;
+}
+
+.crypto-eth .crypto-icon {
+  color: #9aa8ff;
+}
+
+.crypto-sol .crypto-icon {
+  color: #7dffd2;
+}
+
+.crypto-text {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.05rem;
+}
+
+.crypto-text span:first-child {
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1rem;
+}
+
+.crypto-text span:last-child {
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.45);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  line-height: 0.9rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 430px) {
+  .crypto-dock {
+    grid-template-columns: 1fr;
+  }
+
+  .crypto-chip {
+    padding: 0.7rem 0.75rem;
+  }
+}
+
 /* Subtle hover effect */
 .hover-lift {
   transition: all 0.2s ease;

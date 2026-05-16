@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ActivityCard } from "@/components/ActivityCard";
+import { CryptoButtons } from "@/components/CryptoButtons";
 import { Cursor } from "@/components/Cursor";
 import { DiscordInviteCard } from "@/components/DiscordInviteCard";
 import { SpotifyCard } from "@/components/SpotifyCard";
@@ -134,6 +135,8 @@ export function ProfileCard({
             </div>
           )}
         </div>
+
+        <CryptoButtons />
       </div>
     </main>
   );
