@@ -6,29 +6,19 @@ const coins = [
   {
     key: "btc",
     name: "Bitcoin",
-    ticker: "BTC",
     address: "bc1qgqsmxsufh428dca5u7umedgr4qk5ejma5q2rqw",
-    href: "bitcoin:bc1qgqsmxsufh428dca5u7umedgr4qk5ejma5q2rqw",
   },
   {
     key: "eth",
     name: "Ethereum",
-    ticker: "ETH",
     address: "0xfe5fef32b65107a6f8c0e84f47daa94d6a5095f9",
-    href: "ethereum:0xfe5fef32b65107a6f8c0e84f47daa94d6a5095f9",
   },
   {
     key: "sol",
     name: "Solana",
-    ticker: "SOL",
     address: "HetgF7w9tVuND1hzBgt7WBvUaex4EDnkzwGHHLoDGQ7j",
-    href: "solana:HetgF7w9tVuND1hzBgt7WBvUaex4EDnkzwGHHLoDGQ7j",
   },
 ] as const;
-
-function short(value: string) {
-  return `${value.slice(0, 5)}...${value.slice(-4)}`;
-}
 
 function Icon({ coin }: { coin: (typeof coins)[number]["key"] }) {
   if (coin === "btc") {
@@ -77,23 +67,21 @@ export function CryptoButtons() {
   }
 
   return (
-    <div className="crypto-dock" aria-label="Crypto payment links">
+    <div className="crypto-dock" aria-label="Crypto addresses">
       {coins.map((coin) => (
-        <a
+        <button
           key={coin.key}
+          type="button"
           className={`crypto-chip crypto-${coin.key}`}
-          href={coin.href}
           onClick={() => copy(coin.address, coin.key)}
-          title={`Send ${coin.name}`}
+          title={`Copy ${coin.name} address`}
+          aria-label={`Copy ${coin.name} address`}
         >
+          {copied === coin.key && <span className="crypto-copied">Copied</span>}
           <span className="crypto-icon">
             <Icon coin={coin.key} />
           </span>
-          <span className="crypto-text">
-            <span>{coin.ticker}</span>
-            <span>{copied === coin.key ? "Copied" : short(coin.address)}</span>
-          </span>
-        </a>
+        </button>
       ))}
     </div>
   );

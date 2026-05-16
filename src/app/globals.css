@@ -294,56 +294,55 @@ body {
 }
 
 .crypto-dock {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
   margin-top: 1rem;
 }
 
 .crypto-chip {
+  position: relative;
   display: flex;
-  min-width: 0;
+  width: 2.9rem;
+  height: 2.9rem;
   align-items: center;
-  gap: 0.55rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.095), rgba(255, 255, 255, 0.025)),
-    rgba(12, 12, 13, 0.72);
-  padding: 0.6rem 0.65rem;
+  justify-content: center;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  padding: 0;
   color: rgba(255, 255, 255, 0.86);
-  text-decoration: none;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 16px 38px rgba(0, 0, 0, 0.28);
+  outline: none;
   transition:
-    border-color 160ms ease,
-    background 160ms ease,
+    color 160ms ease,
+    opacity 160ms ease,
     transform 160ms ease;
 }
 
 .crypto-chip:hover {
-  border-color: rgba(255, 255, 255, 0.22);
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04)),
-    rgba(18, 18, 19, 0.82);
-  transform: translateY(-1px);
+  opacity: 0.95;
+  transform: translateY(-2px) scale(1.03);
+}
+
+.crypto-chip:focus-visible {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.32);
 }
 
 .crypto-icon {
   display: inline-flex;
-  width: 1.75rem;
-  height: 1.75rem;
-  flex: 0 0 auto;
+  width: 2.25rem;
+  height: 2.25rem;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
+  background: transparent;
+  filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.08));
 }
 
 .crypto-icon svg {
-  width: 1.15rem;
-  height: 1.15rem;
+  width: 1.85rem;
+  height: 1.85rem;
 }
 
 .crypto-btc .crypto-icon {
@@ -358,37 +357,26 @@ body {
   color: #7dffd2;
 }
 
-.crypto-text {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  gap: 0.05rem;
-}
-
-.crypto-text span:first-child {
-  color: rgba(255, 255, 255, 0.94);
-  font-size: 0.8rem;
-  font-weight: 700;
-  line-height: 1rem;
-}
-
-.crypto-text span:last-child {
-  overflow: hidden;
-  color: rgba(255, 255, 255, 0.45);
+.crypto-copied {
+  position: absolute;
+  bottom: calc(100% + 0.25rem);
+  left: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(10, 10, 10, 0.9);
+  padding: 0.2rem 0.48rem;
+  color: rgba(255, 255, 255, 0.86);
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.62rem;
   line-height: 0.9rem;
-  text-overflow: ellipsis;
+  transform: translateX(-50%);
   white-space: nowrap;
 }
 
 @media (max-width: 430px) {
-  .crypto-dock {
-    grid-template-columns: 1fr;
-  }
-
   .crypto-chip {
-    padding: 0.7rem 0.75rem;
+    width: 2.75rem;
+    height: 2.75rem;
   }
 }
 
