@@ -6,17 +6,17 @@ const coins = [
   {
     key: "btc",
     name: "Bitcoin",
-    address: "bc1qgqsmxsufh428dca5u7umedgr4qk5ejma5q2rqw",
+    address: "bc1qddxr3sl4dah0cp9t4mzuf9n6gdz0647aly3tkk",
   },
   {
     key: "eth",
     name: "Ethereum",
-    address: "0xfe5fef32b65107a6f8c0e84f47daa94d6a5095f9",
+    address: "0x9Af09B567847033Dac595E37deB48C2925b9B0DB",
   },
   {
     key: "sol",
     name: "Solana",
-    address: "HetgF7w9tVuND1hzBgt7WBvUaex4EDnkzwGHHLoDGQ7j",
+    address: "2nucEAHPXYpBi8nUSay8YtcgKTuMKKMMNxa1agpSFng3",
   },
 ] as const;
 
